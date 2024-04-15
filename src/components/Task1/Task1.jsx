@@ -1,14 +1,26 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import ArticleList from "../ArticleList/ArticleList";
+import Loader from "../Loader/Loader";
+import { fetchArticlesWithTopic } from "../../articles-api";
 
 const Task1 = ({}) => {
   const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
-      const url = "https://hn.algolia.com/api/v1/search?query=react";
-      const response = await axios.get(url);
-      console.log(response);
-      setArticles(response.data.hits);
+      try {
+        setLoading(true);
+        const dataArticle = await fetchArticlesWithTopic("react");
+        console.log(dataArticle);
+
+        setArticles(dataArticle);
+      } catch (error) {
+        setError(true);
+      }
+      setLoading(false);
     }
     fetchData();
   }, []);
@@ -16,17 +28,9 @@ const Task1 = ({}) => {
   return (
     <div>
       <h1>Latest articles</h1>
-      {articles.length > 0 && (
-        <ul>
-          {articles.map(({ objectID, url, title }) => (
-            <li key={objectID}>
-              <a href={url} target="_blank" rel="noreferrer noopener">
-                {title}
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+      {loading && <Loader />}
+      {error && <p>Error</p>}
+      {articles.length > 0 && <ArticleList items={articles}></ArticleList>}
     </div>
   );
 };
