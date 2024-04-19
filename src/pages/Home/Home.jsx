@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-const Error = ({}) => {
+const Home = ({}) => {
   return (
     <div>
-      <p>Error</p>
+      <h1>Home</h1>
     </div>
   );
 };
 
-export default Error;
+export default Home;

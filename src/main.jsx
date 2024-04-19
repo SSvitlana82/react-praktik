@@ -1,14 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
+import { BrowserRouter } from "react-router-dom";
 
 import "./index.css";
-import { myContext } from "./hooks/useMyContext.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <myContext.Provider value={{ login: "Mango" }}>
+    <BrowserRouter>
       <App />
-    </myContext.Provider>
+    </BrowserRouter>
   </React.StrictMode>
 );
