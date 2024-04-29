@@ -1,5 +1,5 @@
 export const tasksSelector = (state) => {
-  return state.tasks;
+  return [state.items, state.isLoading, state.error];
 };
 
 export const filtersStatusSelector = (state) => {
