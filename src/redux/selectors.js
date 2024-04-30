@@ -1,7 +1,4 @@
 export const tasksSelector = (state) => {
-  return [state.items, state.isLoading, state.error];
-};
-
-export const filtersStatusSelector = (state) => {
-  return state.filters.status;
+  console.log(state);
+  return [state.tasks.items, state.tasks.isLoading, state.tasks.error];
 };
