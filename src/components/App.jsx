@@ -1,27 +1,23 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTasks } from "../redux/tasks/operations";
+import { Suspense, lazy } from "react";
+import { Route, Routes } from "react-router-dom";
 
-import { tasksSelector } from "../redux/selectors";
+const MyAsyncRedux = lazy(() => import("../pages/MyAsyncRedux"));
+const MyForm = lazy(() => import("../pages/MyForm"));
+const MyRedux = lazy(() => import("../pages/MyRedux"));
+const MyEseEffect = lazy(() => import("../pages/MyEseEffect"));
 
 export const App = () => {
-  const dispatch = useDispatch();
-  const [items, isLoading, error] = useSelector(tasksSelector);
-  useEffect(() => {
-    dispatch(fetchTasks());
-  }, [dispatch]);
-
   return (
-    <div>
-      {isLoading && <p>Loading tasks...</p>}
-      {error && <p>{error}</p>}
-      <ul>
-        {items.map((item) => {
-          return <li key={item.id}>{item.title}</li>;
-        })}
-      </ul>
-      {/* <p>{items.length > 0 && JSON.stringify(items, null, 2)}</p> */}
-    </div>
+    <>
+      <Suspense fallback={<div>loading ...</div>}>
+        <Routes>
+          <Route path="/myasync" element={<MyAsyncRedux />} />;
+          <Route path="/myform" element={<MyForm />} />;
+          <Route path="/myredux" element={<MyRedux />} />;
+          <Route path="/myuse" element={<MyEseEffect />} />;
+        </Routes>
+      </Suspense>
+    </>
   );
 };
 
