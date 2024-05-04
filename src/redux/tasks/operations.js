@@ -13,7 +13,14 @@ const BASE_URL = "https://jsonplaceholder.typicode.com";
 const END_POINT = "/todos";
 const url = BASE_URL + END_POINT;
 
-export const fetchTasks = createAsyncThunk("todos/fetchAll", async () => {
-  const response = await axios.get(url);
-  return response.data;
-});
+export const fetchTasks = createAsyncThunk(
+  "todos/fetchAll",
+  async (_, thunkAPI) => {
+    try {
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);

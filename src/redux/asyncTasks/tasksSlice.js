@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getUsers } from "../../API";
 import { tasksReducer } from "../tasks/tasksSlice";
+import { buildErrorMessage } from "vite";
 
 const initState = {
   items: [],
@@ -12,7 +13,26 @@ const initState = {
 export const todosSlice = createSlice({
   name: "tasks",
   initialState: initState,
-  extraReducers: {
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUsers.pending, (state, action) => {
+        state.isLoading = true;
+      }) //завантаження пішло
+      .addCase(getUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.items = action.payload; //payload - дані які відправила
+        state.error = null;
+      })
+      .addCase(getUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
+  },
+});
+export const todoReduser = todosSlice.reducer;
+
+/* extraReducers: {
+    
     [getUsers.pending](state, action) {
       state.isLoading = true;
     }, //завантаження пішло
@@ -25,6 +45,4 @@ export const todosSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-  },
-});
-export const todoReduser = todosSlice.reducer;
+  }, */
